@@ -378,11 +378,7 @@
             //console.log(message);
 
            $.ajax({
-<<<<<<< HEAD
-            url:"http://3.23.44.163/predict",
-=======
-            url:"http:/3.23.44.163/predict",
->>>>>>> c3f05647d8550b07c3fe9c5dd71499ebf586e56e
+            url:"http://localhost/predict",
             method:"POST",
             data: message,
             contentType: false,
@@ -434,6 +430,7 @@
 
         img.onclick = function(){
           modal.style.display = "block";
+          
           modal.style.overflow = "hidden";
           modalImg.src = this.src;
           modalImg.style.width = "100%";

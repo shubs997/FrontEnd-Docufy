@@ -59,7 +59,7 @@ function gotFile(file) {
           changeToResult(data);
           displayoriginal(dataURL);
           plot(data);
-      }, 10000)
+      }, 6000)
       //  alert(data);
       }
      });

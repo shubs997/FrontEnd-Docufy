@@ -294,7 +294,7 @@ main {
 }
 
 #dropzone img {
-  display: none;
+  display: block;
   margin: auto;
   width: 4rem;
 }
