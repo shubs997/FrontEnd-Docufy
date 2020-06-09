@@ -42,7 +42,7 @@ function gotFile(file) {
     console.log(typeof message)
 
     $.ajax({
-      url:"http://localhost/predict",
+      url:"http://3.23.44.163/predict",
       method:"POST",
       data: message,
       contentType: false,
@@ -73,6 +73,7 @@ function gotFile(file) {
     // Draw the image onto the canvas
     // image(img, 0, 0, width, height);
   } else {
+    document.getElementById("changeText").innerHTML = "Not an image file! upload png and jpg files only.";
     console.log('Not an image file!');
   }
 }
