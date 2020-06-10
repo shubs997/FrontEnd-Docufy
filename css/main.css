@@ -468,8 +468,24 @@ input[type="file"] {
       left: 0px;
     }
 
+    #dropzone {
+      flex-direction: column !important;
+    }
+
+    #displaySpan {
+      font-size: 1rem !important;
+    }
+
     #dropzone .custom-file-upload {
       padding: 0.4rem 0.7rem;
+    }
+    
+    #uploadedImage {
+      margin: 10px auto !important;
+    }
+
+    #tickCross{
+      width:3rem !important;
     }
 }
 

@@ -211,7 +211,7 @@
                 <div id="colLeftText">
                   <div id="textDisplay">
                     <p id="displayResult"><img id="tickCross" src="assets/tick.svg" alt=""><span id="displaySpan">Image is Authentic</span></p>
-                    <p id="changeText">Drag and Drop your file here to upload to the blockchain</p>
+                    <p id="changeText">Drag and Drop your file here</p>
                   </div>
                   <div id="chart-container" style="position: relative; height:10vh; width:10vw; margin-top: 1.5rem;">
                     <canvas id="myChart"></canvas>
@@ -375,7 +375,7 @@
             //console.log(message);
 
            $.ajax({
-            url:"http://localhost/predict",
+            url:"http://3.23.44.163/predict",
             method:"POST",
             data: message,
             contentType: false,
@@ -398,6 +398,9 @@
                   displayoriginal(dataURL);
                   plot(data);
                 }, 6000)
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Error: Server is down cannot process the file :("); 
             }
            });
            document.getElementById("changeText").innerHTML = "Uploading...";
@@ -428,14 +431,14 @@
         img.onclick = function(){
           modal.style.display = "block";
           
-          modal.style.overflow = "hidden";
+          modal.style.overflow = "auto";
           modalImg.src = this.src;
           modalImg.style.width = "100%";
           captionText.innerHTML = fileName;
         }
         elaimg.onclick = function(){
           modal.style.display = "block";
-          modal.style.overflow = "hidden";
+          modal.style.overflow = "auto";
           modalImg.src = this.src;  
           modalImg.style.width = "100%";
           captionText.innerHTML = "ELA IMAGE";
