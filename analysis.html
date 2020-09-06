@@ -305,8 +305,8 @@
         <div class="heading">
             <a href="index.html"><img src="assets/left-play.svg" alt=""></a>
             <div class="text">
-                <h1>Verify Documents</h1>
-                <p>Upload your document for verification</p>
+                <h1>Analyse Documents</h1>
+                <p>Error level Analysis of Documents</p>
             </div>
             </br>
         </div>
@@ -406,14 +406,11 @@
               Tp = 100 - data.score;
               console.log("printing Au:"+Au+"printing Tp:"+Tp)
 
-              $("#verify").click(function(data){
-                verifyPopulate(data);
-              })
           
                 setTimeout(function() {
-                  changeToResult(data);
+                  changeToAnalysis(data);
                   displayoriginal(dataURL);
-                  plot(data);
+                  //plot(data);
                 }, 6000)
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 

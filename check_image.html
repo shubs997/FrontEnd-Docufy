@@ -196,7 +196,7 @@
 
 <!-- Option 5 check image in blockchain   -->
           <li class="nav-item">
-            <a href="check_image.html" class="nav-link">
+            <a href="getchain.html" class="nav-link">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62" height="62" viewBox="0 0 62 62">
                 <defs>
                   <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
@@ -303,78 +303,42 @@
     
       <main>
         <div class="heading">
-            <a href="index.html"><img src="assets/left-play.svg" alt=""></a>
+            <img src="assets/left-play.svg" alt="">
             <div class="text">
-                <h1>Verify Documents</h1>
-                <p>Upload your document for verification</p>
+                <h1>Check Document</h1>
+                <p>Check Blockchain for the Document</p>
             </div>
             </br>
         </div>
 
         <div class="container">
-          <div id ="dropzone" class="upload-section">
-              <img id="icon" src="assets/arrow.svg" alt=""> 
+            <div id ="dropzone" class="upload-section">
+                <img id="icon" src="assets/arrow.svg" alt=""> 
+                <p id="displayResult"><img id="tickCross" src="assets/tick.svg" alt=""><span id="displaySpan">Image is Authentic</span></p>  
+
+                <p id="changeText">Drag and Drop your file here to Check</p>
+
+                <label id="verify" class="custom-button">Verify on Blockchain</label>
+
+                <div id="load" class="progress-bar" style="--width: 10" data-label="Uploading..."></div>
+                <!-- <button onclick="progress()">Try it</button> -->
+                <p id="or">OR</p>
                 
-              <div id="resultText">
-                <img id="uploadedImage" src="" alt="">
-                <figcaption class="img_caption">Uploaded Image</figcaption>
-              </div>
-
-              <div id="colLeft">
-                <div id="colLeftText">
-                  <div id="textDisplay">
-                    <p id="displayResult"><img id="tickCross" src="assets/tick.svg" alt=""><span id="displaySpan">Image is Authentic</span></p>
-                    <p id="changeText">Drag and Drop your File here to Upload</p>
-                  </div>
-                  <div id="chart-container" style="position: relative; height:10vh; width:10vw; margin-top: 1.5rem;">
-                    <canvas id="myChart"></canvas>
-                  </div>
-                </div>
-  
-                <div class="resultImages">
-                  <img id="elaImage" src="" alt="">
-                  <figcaption class="img_caption">Error Level Analysed Image</figcaption>
-                  <p id="myHash" style="font-size: 1rem;"></p>
-                  <label id="verify" class="custom-button">Verify on Blockchain</label>
-                </div>
-              </div>
-              
-              
-
-              <div id="load" class="progress-bar" style="--width: 10" data-label="Uploading..."></div>
-              <!-- <button onclick="progress()">Try it</button> -->
-              <p id="or">OR</p>
-              
-              <label id="chooseFile" class="custom-file-upload">
-                <input id="image-selector" type="file"/>Choose File</label>
-                  
-              <!-- The Modal -->
-              <div id="myModal" class="modal">
-                <span class="close">&times;</span>
-                <img class="modal-content" id="img01">
-                <div id="caption"></div>
-              </div>
-
-
-          </div>
-      </div>
+                  <label id="chooseFile" class="custom-file-upload">
+                    <input id="image-selector" type="file"/>Choose File</label>
+                    <!-- <button id="predict-button">Predict</button> -->
+                
+            </div>
+        </div>
       </main>
 
 
       <!-- Request Script -->
       <script>
         let base64Image;
-        let Au;
-        let Tp;
-        let fileName;
-        $("#uploadedImage").hide();
-        $(".img_caption").hide();
-        $("#elaImage").hide();
         $("#image-selector").change(function() {
           let reader = new FileReader();
           reader.readAsDataURL($("#image-selector")[0].files[0]);
-          fileName = ($("#image-selector")[0].files[0]).name;
-          console.log("filename:" +fileName);
           reader.onload = function(e) {
             let dataURL = reader.result;
             console.log("LOGGING dataURL");
@@ -392,7 +356,7 @@
             //console.log(message);
 
            $.ajax({
-            url:"http://localhost/predict",
+            url:"http://localhost/check",
             method:"POST",
             data: message,
             contentType: false,
@@ -401,76 +365,21 @@
             processData: false,  
             success:function(data)
             {
-              console.log(data);
-              Au = data.score;
-              Tp = 100 - data.score;
-              console.log("printing Au:"+Au+"printing Tp:"+Tp)
-
-              $("#verify").click(function(data){
-                verifyPopulate(data);
-              })
-          
-                setTimeout(function() {
-                  changeToResult(data);
-                  displayoriginal(dataURL);
-                  plot(data);
-                }, 6000)
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Error: Server is down cannot process the file :("); 
+            console.log(data);
+            setTimeout(function() {
+                prepareCheckResults(data);
+            }, 5000)
+            
+            //$('#changeText').html(data.message+"<br>img_hash: "+data.img_hash);
             }
            });
            document.getElementById("changeText").innerHTML = "Uploading...";
           //start progress bar
           progress();
-          //call change function 
-          setTimeout(change, 5000);
-
+          // //call change function 
+          // setTimeout(prepareIssue, 5000);
           }
         });
-
-        // // Global Options
-        // Chart.defaults.global.defaultFontFamily = 'Lato';
-        // Chart.defaults.global.defaultFontSize = 18;
-        // Chart.defaults.global.defaultFontColor = '#777';
-
-        
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById("uploadedImage");
-        var elaimg = document.getElementById("elaImage");
-        
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-
-        img.onclick = function(){
-          modal.style.display = "block";
-          
-          modal.style.overflow = "auto";
-          modalImg.src = this.src;
-          modalImg.style.width = "100%";
-          captionText.innerHTML = fileName;
-        }
-        elaimg.onclick = function(){
-          modal.style.display = "block";
-          modal.style.overflow = "auto";
-          modalImg.src = this.src;  
-          modalImg.style.width = "100%";
-          captionText.innerHTML = "ELA IMAGE";
-        }
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() { 
-          modal.style.display = "none";
-        }
-
-
-
 
 
       </script>

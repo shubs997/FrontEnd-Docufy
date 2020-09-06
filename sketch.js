@@ -152,13 +152,57 @@ function changeToResult(data) {
   }
   uploadedImage.style.display = 'block';
   elaImage.style.display = 'block';
-  
+  $(".img_caption").show();
   displaySpan.innerHTML = data.prediction;
   elaImage.src = "data:image/png;base64," + data.ImageBytes;
   
 }
 
+function changeToAnalysis(data) {  
+  var changeText = document.getElementById("changeText"); //main drag n drop text
+  var tickCross = document.getElementById("tickCross"); //tick svg
+  var displaySpan = document.getElementById("displaySpan"); //prediction display span
+  var uploadedImage = document.getElementById("uploadedImage"); //uploaded base64 image
+  var elaImage = document.getElementById("elaImage"); //recieved ELA image
+  var verify = document.getElementById("verify"); //the verify blockchain button
+  var dropzone = document.getElementById("dropzone"); //for result display page
+  var colLeft = document.getElementById("colLeft"); //for result display page
+  var colLeftText = document.getElementById("colLeftText"); //for result display page
+  var textDisplay = document.getElementById("textDisplay");
+  //adding css for result display page
+  dropzone.style.flexDirection = 'row';
+  colLeft.style.backgroundColor = '#ddd';
+  colLeft.style.borderRadius = '8px';
+  colLeftText.style.display = 'none';
+  textDisplay.style.marginLeft = '10%';
+  verify.style.display = 'none';
+  $(".resultImages").css("margin-top", "4vh");
 
+  
+  document.getElementById("displayResult").style.display = 'flex';
+  
+  document.getElementById("icon").style.display = 'none';
+  document.getElementById("load").style.display = 'none';
+  document.getElementById("changeText").style.display = 'block';
+  document.getElementById("chart-container").style.display = 'block';
+  
+  Au = data.output.Au;
+  Tp = 100 - data.output.Tp;
+
+  var score = "score : "+data.score+ "%";
+  hashValue = "Hash: "+data.shahash;
+  changeText.innerHTML = score;
+  //display cross if manipulated
+  if(data.prediction == 'Image Is Manipulated'){
+    tickCross.src = "assets/cross.svg";
+  }
+  uploadedImage.style.display = 'block';
+  elaImage.style.display = 'block';
+  $(".img_caption").show();
+  displaySpan.innerHTML = data.prediction;
+  elaImage.src = "data:image/png;base64," + data.ImageBytes;
+  
+}
 
 function displayoriginal(dataURL) {
   console.log("DISPLAY ORIGINAL CALLED...");
@@ -197,6 +241,26 @@ function prepareIssue(data){
   icon.style.display = 'none';
   
   changeText.innerHTML = data.message+"<br>index: "+data.index+"<br>proof: "+data.proof+"<br>previous_hash: "+data.previous_hash+"<br>img_hash: "+data.img_hash;
+}
+
+
+function prepareCheckResults(data){
+  document.getElementById("chooseFile").style.display = 'block';
+  document.getElementById("or").style.display = 'block';
+  document.getElementById("or").style.marginBottom = '0';
+  document.getElementById("or").style.fontWeight = 'bold';
+  document.getElementById("or").innerHTML = "Drag and drop to upload another file<br> OR";
+  
+  document.getElementById("load").style.display = 'none';
+  var icon = document.getElementById("icon");
+  var textbox = document.getElementById("changeText");
+  textbox.style.display = 'block';
+  textbox.style.fontSize = '1rem';
+  
+  icon.style.display = 'none';
+  console.log(data);
+  changeText.innerHTML = data.message;
+
 }
 
 function verifyPopulate(data) {
@@ -247,8 +311,14 @@ function plot(data){
         display:false,
         position:'right',
       },
+      layout: {
+        padding: {
+            left: 10,
+            right: 10
+        }
+    },
       tooltips:{
-        enabled:true
+        yAlign: 'bottom',
       }
     }
   });
