@@ -137,22 +137,22 @@ function changeToResult(data) {
   
   document.getElementById("icon").style.display = 'none';
   document.getElementById("load").style.display = 'none';
-  document.getElementById("changeText").style.display = 'block';
-  document.getElementById("chart-container").style.display = 'block';
+  document.getElementById("changeText").style.display = 'none';
+  document.getElementById("chart-container").style.display = 'none';
   
   Au = data.output.Au;
   Tp = 100 - data.output.Tp;
 
   var score = "score : "+data.score+ "%";
   hashValue = "Hash: "+data.shahash;
-  changeText.innerHTML = score;
+  // changeText.innerHTML = score;
   //display cross if manipulated
-  if(data.prediction == 'The image was rejected by Image Processing Module, image is manipulated'){
+  if(data.prediction == 'The image was rejected by Image Processing Module'){
     tickCross.src = "assets/cross.svg";
   }
   uploadedImage.style.display = 'block';
-  elaImage.style.display = 'block';
-  $(".img_caption").show();
+  elaImage.style.display = 'none';
+  $(".img_caption").hide();
   displaySpan.innerHTML = data.prediction;
   elaImage.src = "data:image/png;base64," + data.ImageBytes;
   
@@ -196,9 +196,12 @@ function changeToAnalysis(data) {
   if(data.prediction == 'Image Is Manipulated'){
     tickCross.src = "assets/cross.svg";
   }
+  else if(data.prediction == 'Image Is Tampered'){
+    tickCross.src = "assets/cross.svg";
+  }
   uploadedImage.style.display = 'block';
   elaImage.style.display = 'block';
-  $(".img_caption").show();
+  $(".img_caption").hide();
   displaySpan.innerHTML = data.prediction;
   elaImage.src = "data:image/png;base64," + data.ImageBytes;
   
@@ -325,5 +328,3 @@ function plot(data){
     }
   });
 }
-
-
